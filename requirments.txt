@@ -1,0 +1,11 @@
+langchain
+openmeteo-requests
+langchain_core
+langchain_community
+langchain_groq
+python_dotenv
+numpy
+pandas
+requests-cache
+
+retry-requests 
