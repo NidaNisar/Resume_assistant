@@ -7,5 +7,6 @@ python_dotenv
 numpy
 pandas
 requests-cache
+chromadb
 
 retry-requests 
