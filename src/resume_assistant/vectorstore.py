@@ -22,3 +22,52 @@ class Vectorstore:
              print(f"Existing document in the store {self.collection.count()}")
         except Exception as e:
             print(f"Error in collection {e}")
+    def add_documents(self,documents:List[str],embeddings):
+                    if len(documents)!=len(embeddings):
+                        return ValueError("length of document and embeddings does not match")
+                    
+                   
+                        #Prepare data for store in the choromadb
+                    ids=[]
+                    metadatas=[]
+                    embedding=[]
+                    document=[]
+                    for i,(doc,embedd) in enumerate(zip(documents,embeddings)):
+                            #id 
+                        doc_id=f"doc_{uuid.uuid4().hex[:8]}_{i}"
+                        ids.append(doc_id)
+                            # metadata
+                        document.append(doc.page_content)
+                        embedding.append(embedd.tolist())
+                        metadata=dict(doc.metadata)
+                        metadata['index']=i
+                        metadata['content_length']=len(doc.page_content)
+                        metadatas.append(metadata)
+                  
+                    try:
+                        exist=self.collection.get(
+                             ids=[doc_id]
+                         )
+                        if exist:
+                            print("Duplicate — skipping")
+                        else:    
+                         self.collection.add(ids=ids,
+                         metadatas=metadatas,
+                         embeddings=embedding,
+                         documents=document )
+                        print(f" successfully Add the {len(documents)} document to the vector db")
+                        print(f"Total {(self.collection.count())} documents in the vecttore db")
+            
+                           
+                    except Exception as e:
+                         print(f"Error in collection {e}")
+                
+            
+            
+                       
+                    
+                   
+            
+                   
+            
+                                               
